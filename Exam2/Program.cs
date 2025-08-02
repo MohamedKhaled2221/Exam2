@@ -112,7 +112,7 @@
            this.Grade = Grade;
         }
 
-        public FinalExam(TimeOnly duration):base(TimeOnly.MinValue, 0, null) 
+        public FinalExam(TimeOnly duration):base(duration, 0, null) 
         {
             Duration = duration;
         }
@@ -179,7 +179,7 @@
             this.Grade = Grade;
         }
 
-        public PracticalExam(TimeOnly duration): base(TimeOnly.MinValue, 0, null) 
+        public PracticalExam(TimeOnly duration): base(duration, 0, null) 
         {
             Duration = duration;
         }
@@ -205,9 +205,91 @@
     {
         static void Main(string[] args)
         {
+         
+            var Subject = new Subject(1, "C# Fundamentals");
 
+            Subject.CreateExam(Typeofexam.Final, new TimeOnly(3, 0)); 
 
+            
+            var answers01 = new Answers[]
+            {
+            new Answers(1, "True"),
+            new Answers(2, "False")
+            };
+
+            var answers02 = new Answers[]
+            {
+            new Answers(1, " a=5"),
+            new Answers(2, "b= 2"),
+            new Answers(3, "c= 25"),
+            new Answers(4, "d= 53")
+            };
+
+            
+            var truefalseQuestion = new TrueFalseQuestion
+            {
+                Header = "True OR False Question",
+                Body = "OPP",
+                Mark = 10,
+                AnswerList = answers01,
+                NumofQuestion = new List<int> { 1 },
+                Answer = new List<bool> { true }
+            };
+            var mcqQuestion = new McqQuestion
+            {
+                Header = "MCQ Question",
+                Body = "Which is the correct Value bigger than 50",
+                Mark = 10,
+                AnswerList = answers02,
+                NumofQuestion = new List<int> { 4 },
+                CorrectChoicesIndices = new List<char> { 'd' } 
+            };
+
+            if (Subject.ExamofSubject is FinalExam finalExam)
+            {
+                finalExam.Questions.Add(truefalseQuestion);
+                finalExam.Questions.Add(mcqQuestion);
+                finalExam.NumberOfQuestions = finalExam.Questions.Count;
+            }
+
+            Subject.ExamofSubject.DisplayExamDetails();
+           Subject.ExamofSubject.ShowResults();  
+            var OperatingsysSubject = new Subject(102, "OPerating SYS");
+            OperatingsysSubject.CreateExam(Typeofexam.Practical, new TimeOnly(2, 30)); 
+            var practicalQuestion = new McqQuestion
+            {
+                Header = "Practical Question",
+                Body = "Which is True solution",
+                Mark = 20,
+                AnswerList = new Answers[]
+                {
+                new Answers(1, "a"),
+                new Answers(2, "b"),
+                new Answers(3, "c"),
+                new Answers(4, "d")
+                },
+                NumofQuestion = new List<int> { 1 },
+                CorrectChoicesIndices = new List<char> { 'b' } 
+            };
+            if (OperatingsysSubject.ExamofSubject is PracticalExam practicalExam)
+            {
+                practicalExam.Questions.Add(practicalQuestion);
+                practicalExam.NumberOfQuestions = practicalExam.Questions.Count;
+            }
+            Console.WriteLine(" The Results of Particular Exam");
+            OperatingsysSubject.ExamofSubject.DisplayExamDetails();
+            Console.WriteLine("\nTaking the exam...\n");
+            OperatingsysSubject.ExamofSubject.ShowResults();
+            Console.WriteLine("================================================");
+            Console.WriteLine("info about subject");
+            Console.WriteLine(Subject.ToString());
+            Console.WriteLine(OperatingsysSubject.ToString());
+
+          
         }
     }
+
 }
+    
+
 
